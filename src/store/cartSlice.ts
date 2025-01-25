@@ -1,7 +1,6 @@
 
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-// Define a type for cart items
 export interface CartItem {
   id: number;
   name: string;
@@ -9,7 +8,6 @@ export interface CartItem {
   qty: number;
 }
 
-// Define the initial state
 interface CartState {
   items: CartItem[];
 }
@@ -22,7 +20,6 @@ const getCartFromLocalStorage = (): CartItem[] => {
   return [];
 };
 
-// Helper function to write to localStorage
 const saveCartToLocalStorage = (items: CartItem[]) => {
   if (typeof window !== "undefined") {
     localStorage.setItem("cart", JSON.stringify(items));

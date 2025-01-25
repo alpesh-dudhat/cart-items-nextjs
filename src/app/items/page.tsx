@@ -51,7 +51,7 @@ export default function ItemsPage() {
         <div className="p-2 md:p-0">
             <h1 className="text-lg md:text-2xl font-bold mb-3 md:mb-6 text-black">Product List</h1>
             {items.length === 0 ? (
-                <p>Loading items...</p>
+                <p className="text-black text-lg">Loading items...</p>
             ) : (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                     {items.map((item) => (

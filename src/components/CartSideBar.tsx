@@ -5,12 +5,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useSelector, useDispatch } from "react-redux";
 import { removeFromCart, updateQuantity } from "@/store/cartSlice";
 import Link from "next/link";
-import { AiOutlineDelete } from "react-icons/ai";
-
-interface CartSideBarProps {
-    isOpen: boolean;
-    setIsOpen: (open: boolean) => void;
-}
+import CartItem from "./CartItem";
+import { CartSideBarProps } from "@/types/interfaces";
 
 export default function CartSideBar({ isOpen, setIsOpen }: CartSideBarProps) {
     const cartItems = useSelector((state: any) => state?.cart.items);
@@ -47,7 +43,6 @@ export default function CartSideBar({ isOpen, setIsOpen }: CartSideBarProps) {
         <AnimatePresence>
             {isOpen && (
                 <>
-                    {/* Sidebar */}
                     <motion.div
                         initial={{ x: "100%" }}
                         animate={{ x: 0 }}
@@ -66,57 +61,29 @@ export default function CartSideBar({ isOpen, setIsOpen }: CartSideBarProps) {
                             </button>
                         </div>
 
-                        {/* Cart Items */}
                         <div className="flex-1 overflow-y-auto mt-3" style={{ marginBottom: "calc(100% - 55%)" }}>
                             {cartItems.length === 0 ? (
                                 <p className="text-gray-500">Your cart is empty</p>
                             ) : (
-                                <div >
-                                    {cartItems.map((item: any) => (
-                                        <div key={item.id} className="border-b py-3">
-                                            <p className="font-medium text-black mb-2">{item.name}</p>
-                                            <div className="flex justify-between items-center">
-                                                <div className="flex items-center ">
-                                                    <button
-                                                        onClick={() =>
-                                                            handleQuantityChange(item.id, item.qty - 1)
-                                                        }
-                                                        className="flex h-5 w-5 md:h-6 md:w-6 items-center justify-center rounded-full border border-neutral-500 bg-white text-xl hover:border-neutral-700 focus:outline-none disabled:cursor-default disabled:opacity-50 disabled:hover:border-neutral-400 text-black"
-                                                    >
-                                                        -
-                                                    </button>
-                                                    <span className="text-lg font-semibold px-2 text-black">
-                                                        {item.qty}
-                                                    </span>
-                                                    <button
-                                                        onClick={() =>
-                                                            handleQuantityChange(item.id, item.qty + 1)
-                                                        }
-                                                        className="flex h-5 w-5 md:h-6 md:w-6 items-center justify-center rounded-full border border-neutral-500 bg-white text-xl hover:border-neutral-700 focus:outline-none disabled:cursor-default disabled:opacity-50 disabled:hover:border-neutral-400 text-black"
-                                                    >
-                                                        +
-                                                    </button>
-                                                </div>
-                                                <button
-                                                    onClick={() => handleRemove(item.id)}
-                                                    className="text-red-500 hover:text-red-700 text-sm"
-                                                >
-                                                    <AiOutlineDelete className="text-2xl" />
-                                                </button>
-                                            </div>
-
-                                        </div>
+                                <div>
+                                    {cartItems.map((item:any) => (
+                                        <CartItem
+                                            key={item.id}
+                                            item={item}
+                                            onQuantityChange={handleQuantityChange}
+                                            onRemove={handleRemove}
+                                        />
                                     ))}
+                                   
                                 </div>
                             )}
                         </div>
 
-                        {/* Footer */}
                         <div className="absolute bottom-0 left-0 w-full bg-neutral-50 p-5">
                             <p className="flex justify-between text-black">
                                 <span>
                                     <span className="font-medium">Subtotal</span>
-                                   
+
                                 </span>
                                 <span className="text-xl font-medium">${total.toFixed(2)}</span>
                             </p>
@@ -139,7 +106,6 @@ export default function CartSideBar({ isOpen, setIsOpen }: CartSideBarProps) {
                         </div>
                     </motion.div>
 
-                    {/* Backdrop */}
                     <motion.div
                         onClick={handleClose}
                         initial={{ opacity: 0 }}
