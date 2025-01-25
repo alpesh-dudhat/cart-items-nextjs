@@ -5,6 +5,7 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import { Provider } from "react-redux";
 import { store } from "@/store/reducer";
+import { NotificationProvider } from "@/notifications/NotificationContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,8 +33,10 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <Provider store={store}>
-          <Navbar />
-          <main className="container mx-auto p-4">{children}</main>
+          <NotificationProvider>
+            <Navbar />
+            <main className="container mx-auto md:p-4">{children}</main>
+          </NotificationProvider>
         </Provider>
       </body>
     </html>

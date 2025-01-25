@@ -1,89 +1,65 @@
-"use client"
-import { removeFromCart } from "@/store/cartSlice";
-import Link from "next/link";
+"use client";
 import { useState } from "react";
-import { FiShoppingCart } from "react-icons/fi";
-import { useDispatch, useSelector } from "react-redux";
+import Link from "next/link";
+import { RiMicrosoftLoopFill } from "react-icons/ri";
+import { useSelector } from "react-redux";
+import CartSideBar from "./CartSideBar";
+import { FaBagShopping } from "react-icons/fa6";
 
 export default function Navbar() {
   const [cartOpen, setCartOpen] = useState(false);
   const cartItems = useSelector((state: any) => state?.cart.items);
-  console.log("cartItems", cartItems);
-  const dispatch = useDispatch();
-
-
-  const handleRemove = (id: number) => {
-    dispatch(removeFromCart(id));
-  };
 
   return (
-    <nav className="bg-gray-800 text-white p-4">
-      <div className="container mx-auto flex justify-between items-center">
-        <div className="flex space-x-4">
-          <Link href="/" className="hover:text-gray-400">
-            Home
-          </Link>
-          <Link href="/items" className="hover:text-gray-400">
-            Items
-          </Link>
-          <Link href="/cart" className="hover:text-gray-400">
-            Cart
-          </Link>
+    <header className="sticky inset-x-0 top-0 z-50 w-full border-b border-neutral-300 bg-white">
+      <div className="container flex items-center justify-between py-4 px-2 lg-px-0 mx-auto">
+        <div className="flex items-center gap-5 lg:basis-[60%]">
+          <RiMicrosoftLoopFill className="text-3xl text-orange-600" />
+          <div className="flex space-x-4 text-black">
+            <Link href="/" className="hover:text-gray-400">
+              Home
+            </Link>
+            <Link href="/items" className="hover:text-gray-400">
+              Items
+            </Link>
+            <Link href="/cart" className="hover:text-gray-400">
+              Cart
+            </Link>
+          </div>
         </div>
 
-        <div className="relative">
-          <Link href="/cart">
-            <div
-              onMouseEnter={() => setCartOpen(true)}
-              onMouseLeave={() => setCartOpen(false)}
-              className="relative focus:outline-none"
-            >
-              <FiShoppingCart className="w-6 h-6" />
 
-              {cartItems.length > 0 && (
-                <span className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full text-xs px-2" suppressHydrationWarning={true}>
-                  {cartItems.length}
-                </span>
-              )}
-            </div>
-          </Link>
-
-          {/* Dropdown  */}
-          {cartOpen && typeof window !== "undefined" && (
-            <div
-              onMouseEnter={() => setCartOpen(true)}
-              onMouseLeave={() => setCartOpen(false)}
-              className="absolute right-0 -mt-2 w-64 bg-white text-black rounded shadow-lg"
-            >
-              <div className="p-4">
-                {cartItems.length === 0 ? (
-                  <p className="text-gray-500">Your cart is empty</p>
-                ) : (
-                  <ul>
-                    {cartItems.map((item: any) => (
-                      <li
-                        key={item.id}
-                        className="flex justify-between items-center mb-2 border-b pb-2"
-                      >
-                        <div>
-                          <p className="font-medium">{item.name}</p>
-                          <p className="text-sm text-gray-500">Qty: {item.qty}</p>
-                        </div>
-                        <button
-                          className="text-red-500 hover:text-red-700 text-sm"
-                          onClick={() => handleRemove(item.id)}
-                        >
-                          Delete
-                        </button>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </div>
-            </div>
-          )}
+        <div className="flex flex-1 items-center justify-end gap-5">
+          {/* <button
+            type="button"
+            onClick={() => setCartOpen(true)}
+            className="ml-5 flex items-center gap-1 rounded-full bg-neutral-100 p-2 text-orange-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
+          >
+            <FaBagShopping className="text-2xl" />
+            <span className="hidden text-sm lg:block">
+              {cartItems.length} items
+            </span>
+          </button> */}
+          <button
+            type="button"
+            onClick={() => setCartOpen(true)}
+            className="ml-5 flex items-center gap-1 rounded-full bg-neutral-100 p-2 text-orange-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 relative"
+          >
+            <FaBagShopping className="text-2xl" />
+            <span className="hidden lg:block text-sm">
+              {cartItems.length} items
+            </span>
+            {/* Badge for small screens */}
+            <span className="absolute top-0 right-0 lg:hidden flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-white text-xs">
+              {cartItems.length}
+            </span>
+          </button>
         </div>
       </div>
-    </nav>
+
+
+
+      <CartSideBar isOpen={cartOpen} setIsOpen={setCartOpen} />
+    </header>
   );
 }

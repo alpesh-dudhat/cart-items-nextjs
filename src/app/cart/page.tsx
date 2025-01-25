@@ -2,7 +2,7 @@
 "use client"
 import { removeFromCart, updateQuantity } from "@/store/cartSlice";
 import { RootState } from "@/store/reducer";
-import { useState } from "react";
+import { AiOutlineDelete } from "react-icons/ai";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 
@@ -25,55 +25,77 @@ export default function CartPage() {
   return (
     <div className="p-4 grid grid-cols-1 lg:grid-cols-3 gap-6">
       <div className="lg:col-span-2">
-        <h1 className="text-2xl font-bold mb-4">Your Cart</h1>
-        <ul className="space-y-4">
-          {cartItems.map((item) => (
-            <li
+        <div className="mb-5"><h2 className="text-black block text-xl font-medium sm:text-3xl lg:text-4xl">Your Cart</h2></div>
+        <hr className="my-5 border-neutral-300 xl:my-12"></hr>
+        <div className="space-y-4">
+          {cartItems.length === 0 ? (
+            <div className="text-center text-gray-500 py-10">
+              <p>Your cart is empty.</p>
+            </div>
+          ) : (cartItems.map((item) => (
+            <div
               key={item.id}
-              className="p-4 border rounded shadow hover:shadow-lg transition flex justify-between items-center"
+              className="border hover:shadow-lg transition flex flex-col justify-between  rounded-2xl p-3 shadow-md border-neutral-300"
             >
-              <div>
-                <p className="text-lg font-semibold mb-2">{item.name}</p>
-                <p className="text-gray-400">Price: ${item.price}</p>
+              <p className="text-md md:text-2xl font-semibold mb-2 text-black">{item.name}</p>
+
+              <div className="flex  space-x-2 items-center justify-between">
+                <p className="text-sm md:text-lg text-gray-600">Price: ${item.price}</p>
+                <div className="flex items-center ">
+                  <button
+                    onClick={() => handleQtyChange(item.id, Math.max(1, item.qty - 1))}
+                    className="flex h-5 w-5 md:h-6 md:w-6 items-center justify-center rounded-full border border-neutral-500 bg-white text-xl hover:border-neutral-700 focus:outline-none disabled:cursor-default disabled:opacity-50 disabled:hover:border-neutral-400 text-black"
+                  >
+                    -
+                  </button>
+                  <span className="text-lg font-semibold px-2 text-black">{item.qty}</span>
+                  <button
+                    onClick={() => handleQtyChange(item.id, item.qty + 1)}
+                    className="flex h-5 w-5 md:h-6 md:w-6 items-center justify-center rounded-full border border-neutral-500 bg-white text-xl hover:border-neutral-700 focus:outline-none disabled:cursor-default disabled:opacity-50 disabled:hover:border-neutral-400 text-black"
+                  >
+                    +
+                  </button>
+                  <button
+                    onClick={() => handleRemove(item.id)}
+                    className="text-red-500 hover:text-red-700 transition ml-4"
+                  >
+                    <AiOutlineDelete className="text-2xl" />
+                  </button>
+                </div>
+
               </div>
-              <div className="flex items-center space-x-2">
-                <button
-                  onClick={() => handleQtyChange(item.id, Math.max(1, item.qty - 1))}
-                  className="px-2 py-1 rounded hover:bg-gray-800 transition"
-                >
-                  -
-                </button>
-                <span className="text-lg font-semibold px-2">{item.qty}</span>
-                <button
-                  onClick={() => handleQtyChange(item.id, item.qty + 1)}
-                  className="px-2 py-1 rounded hover:bg-gray-800 transition"
-                >
-                  +
-                </button>
-                <button
-                  onClick={() => handleRemove(item.id)}
-                  className="text-red-500 hover:text-red-700 transition ml-4"
-                >
-                  Delete
-                </button>
-              </div>
-            </li>
-          ))}
-        </ul>
+            </div>
+          )))}
+
+
+        </div>
       </div>
 
-      <div className="p-4 border rounded shadow-lg">
-        <h2 className="text-xl font-bold mb-4">Order Summary</h2>
-        <div className="flex justify-between mb-4">
-          <p className="text-gray-500">Total Items:</p>
-          <p className="font-semibold">{cartItems.reduce((sum, item) => sum + item.qty, 0)}</p>
+      <div className="pt-4 border-0 border-t lg:border-t-0 lg:border-l lg:pl-4">
+        <div className="flex-1">
+          <div className="sticky top-28">
+            <h3 className="text:lg md:text-2xl font-semibold text-black">Summary</h3>
+            <div className="mt-7 divide-y divide-neutral-300 text-sm">
+              <div className="flex justify-between pb-4 text-gray-800">
+                <span>Subtotal</span>
+                <span className="font-semibold">${total.toFixed(2)}</span>
+              </div>
+              <div className="flex justify-between py-4 text-gray-800">
+                <span>Total Quantity</span>
+                <span className="font-semibold">{cartItems.reduce((sum, item) => sum + item.qty, 0)}</span>
+              </div>
+              <div className="flex justify-between py-4 text-gray-800">
+                <span>Estimated taxes</span>
+                <span className="font-semibold">Free</span>
+              </div>
+            </div>
+
+          </div>
         </div>
-        <div className="flex justify-between mb-4">
-          <p className="text-gray-500">Total Price:</p>
-          <p className="font-semibold">${total.toFixed(2)}</p>
-        </div>
+
+
         <button
-          className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 transition"
+          className="w-full bg-orange-500 text-white py-2 rounded hover:bg-orange-600 transition"
         >
           Proceed to Checkout
         </button>

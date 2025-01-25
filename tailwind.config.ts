@@ -8,6 +8,11 @@ export default {
   ],
   theme: {
     extend: {
+      maxWidth: {
+        '1/4': '25%',
+        '1/2': '200px',
+        '3/4': '75%',
+      },
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
