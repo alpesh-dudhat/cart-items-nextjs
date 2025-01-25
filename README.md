@@ -12,7 +12,7 @@ Features
   - View cart summary (total price, total quantity).
 - Cart Persistence: Cart state is saved in `localStorage` to persist across page reloads.
 - Cart Sidebar: Slide-in cart sidebar with a responsive design.
-- Global Notification System: Toast notifications for user actions (e.g., adding items to the cart).
+- Currently Disabled -> Global Notification System: Toast notifications for user actions (e.g., adding items to the cart).
 - Reusable Components: Modular and reusable components for a scalable application.
 
 
